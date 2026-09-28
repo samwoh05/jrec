@@ -73,6 +73,23 @@ Every contact link currently uses **talkafterwork@gmail.com** (from the After Wo
 If Jensen has a personal booking email, search and replace it in `index.html`.
 Add his personal Instagram, YouTube or Vimeo where the commented-out example sits in the *Last call* section.
 
+### Link preview (`assets/og-image.jpg`)
+The card that shows when the link is shared (iMessage, WhatsApp, Instagram DMs, X, LinkedIn, Slack) is a 1200×630 JPG
+rendered from `design-system/og-card.html`, which uses `hero-poster.webp` as its background. After swapping the hero
+poster, re-render it from the project folder (Chrome saves the image and may then hang; stop it with Ctrl+C):
+
+```bash
+"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless=new --hide-scrollbars \
+  --force-device-scale-factor=1 --window-size=1200,630 --virtual-time-budget=8000 \
+  --screenshot=og.png "file://$PWD/design-system/og-card.html"
+ffmpeg -y -i og.png -q:v 3 assets/og-image.jpg && rm og.png
+```
+
+The preview tags in the `<head>` of `index.html` use absolute URLs for `https://samwoh05.github.io/jrec/`.
+If the site moves to a custom domain, search and replace that URL. Platforms cache previews: after changing the card,
+refresh it with the [Facebook Sharing Debugger](https://developers.facebook.com/tools/debug/) (also used by WhatsApp and
+Instagram) and the [LinkedIn Post Inspector](https://www.linkedin.com/post-inspector/).
+
 ## Files
 
 ```
@@ -81,7 +98,9 @@ css/styles.css           design tokens (top of file) + all styles
 js/main.js               nav clock, video, reveals, filters, lightbox, player, copy-email
 assets/img/              placeholder stills (WebP, two sizes)
 assets/video/            placeholder hero loop + featured reel
+assets/og-image.jpg      link preview card (1200×630)
 design-system/MASTER.md  colours, type, spacing, motion and accessibility rules
+design-system/og-card.html  source for the link preview card
 ```
 
 ## Accessibility & performance notes
