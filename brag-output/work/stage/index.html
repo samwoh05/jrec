@@ -1,0 +1,542 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1920, initial-scale=1">
+<title>brag stage</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=block">
+<link rel="stylesheet" href="../../../css/styles.css">
+<style>
+  /* Every frame is a pure function of t: no CSS time. */
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+  html, body { width: 1920px; height: 1080px; overflow: hidden !important; scroll-behavior: auto; }
+  body { position: relative; background: var(--bg); }
+  .scene { position: absolute; inset: 0; overflow: hidden; display: none; isolation: isolate; z-index: 0; background: var(--bg); }
+  .scene.on { display: block; }
+  .ln { display: block; overflow: hidden; padding: .12em .06em .06em; margin: -.12em -.06em -.06em; }
+  .ln > span { display: inline-block; white-space: nowrap; will-change: transform; }
+  .chip { display: inline-flex; align-items: center; }
+  .curtain { position: absolute; inset: 0; z-index: 5; transform-origin: 50% 0; }
+
+  /* nav: always the real component */
+  .nav { z-index: 60; }
+
+  /* S1 hero at 1920 */
+  #s1 .hero { min-height: 0; height: 1032px; }
+
+  /* S2 */
+  #s2-state { position: absolute; left: 140px; top: 318px; width: 1060px; font-size: 92px; line-height: 1.04; }
+  #s2-fig { position: absolute; right: 140px; top: 190px; width: 520px; }
+  #s2-cur { background: var(--bg); }
+
+  /* S3 */
+  #s3-title { position: absolute; left: 128px; top: 150px; font-size: 180px; }
+  #s3-filters { position: absolute; left: 140px; top: 356px; }
+  #s3-grid { position: absolute; left: 140px; top: 440px; width: 1640px; height: 640px; overflow: hidden; }
+  .s3-item { position: absolute; overflow: hidden; background: var(--bg-2); }
+  .s3-item img { width: 100%; height: 100%; object-fit: cover; }
+  #s3-lb { position: absolute; inset: 0; z-index: 70; background: var(--bg); display: none; }
+  #s3-lb .bar { position: absolute; left: 56px; right: 56px; top: 0; height: 64px; display: flex; justify-content: space-between; align-items: center; color: var(--fg-2); }
+  #s3-lb .fig { position: absolute; left: 56px; right: 56px; top: 72px; bottom: 96px; }
+  #s3-lb .fig img { width: 100%; height: 100%; object-fit: contain; }
+  #s3-lb .cap { position: absolute; left: 56px; right: 56px; bottom: 30px; display: flex; justify-content: space-between; align-items: baseline; }
+  #s3-lb .navbtn { position: absolute; top: 50%; translate: 0 -50%; background: rgba(11,10,9,.6); border: 1px solid var(--line-strong); }
+
+  /* S4 */
+  #s4-title { position: absolute; left: 128px; top: 150px; font-size: 150px; }
+  #s4-intro { position: absolute; right: 140px; top: 190px; width: 420px; }
+  #s4-reel { position: absolute; aspect-ratio: auto !important; }
+  #s4-reel .reel__play { inset: 0 0 0 auto; width: 40%; }
+  #s4-cur { background: var(--bg); }
+
+  /* wipes */
+  .wipe { position: absolute; inset: 0; z-index: 55; visibility: hidden; }
+  #wipe-accent { background: var(--accent); }
+  #wipe-bone { background: var(--bone); }
+
+  /* S5 */
+  #s5 { background: var(--bone); color: var(--ink); }
+  #s5 .haus { position: absolute; inset: 0; padding: 0; }
+  #s5-logo { position: absolute; left: 118px; top: 200px; font-size: 196px; }
+  #s5-badge { position: absolute; left: auto; right: 200px; top: 230px; bottom: auto; width: 250px; }
+  #s5-rule { position: absolute; left: 140px; right: 140px; top: 716px; height: 1px; background: var(--ink); transform-origin: 0 50%; }
+  #s5-tag { position: absolute; left: 140px; top: 770px; font-size: 76px; }
+  #s5-services { position: absolute; left: 1010px; top: 752px; width: 770px; }
+  #s5-services li { display: grid; grid-template-columns: 56px 1fr; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--ink-line); }
+  #s5-services .service__name { font-size: 38px; }
+
+  /* S6 */
+  #s6-media { position: absolute; inset: 0 0 0 45%; overflow: hidden; }
+  /* video legibility: the time stamps carry the story, so they're scaled up from the site's 12px */
+  .stamp { font-size: 22px !important; gap: 18px; }
+  .stamp::before { width: 48px; }
+  #s6-out { position: absolute; right: 140px; top: 716px; text-align: right; }
+  #s6-out .t { display: block; font-family: var(--font-display); font-stretch: 125%; font-weight: 900; font-size: 176px; line-height: .86; letter-spacing: -.04em; color: var(--accent); }
+  #s6-out .l { display: block; margin-top: 18px; font-family: var(--font-mono); font-size: 24px; letter-spacing: .22em; text-transform: uppercase; color: var(--fg); }
+  #s6-media img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 60%; }
+  #s6-media::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, var(--bg) 0%, rgba(11,10,9,.4) 40%, rgba(11,10,9,.15) 100%), linear-gradient(0deg, var(--bg), transparent 30%); }
+  #s6-stamp { position: absolute; left: 140px; top: 200px; }
+  #s6-title { position: absolute; left: 128px; top: 262px; font-size: 158px; max-width: none; }
+  #s6-mail { position: absolute; left: 140px; top: 760px; font-size: 60px; }
+  #s6-social { position: absolute; left: 140px; top: 870px; display: flex; gap: 14px; align-items: center; font-size: 26px; color: var(--fg-2); }
+  #s6-social .icon { width: 28px; height: 28px; }
+  #s6-flash { position: absolute; inset: 0; background: var(--fg); pointer-events: none; opacity: 0; }
+
+  /* cursor */
+  #cursor { position: absolute; left: 0; top: 0; z-index: 80; width: 34px; height: 34px; visibility: hidden; transform-origin: 4px 3px; }
+  #ring { position: absolute; z-index: 79; width: 64px; height: 64px; margin: -32px 0 0 -32px; border-radius: 50%; border: 2px solid var(--fg); visibility: hidden; }
+</style>
+</head>
+<body>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4.5v15a1 1 0 0 0 1.5.86l12.5-7.5a1 1 0 0 0 0-1.72L8.5 3.64A1 1 0 0 0 7 4.5z"/></symbol>
+    <symbol id="i-pause" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></symbol>
+    <symbol id="i-arrow-ur" viewBox="0 0 24 24"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></symbol>
+    <symbol id="i-arrow-r" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></symbol>
+    <symbol id="i-arrow-l" viewBox="0 0 24 24"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+    <symbol id="i-instagram" viewBox="0 0 24 24"><rect width="20" height="20" x="2" y="2" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><path d="M17.5 6.5h.01"/></symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></symbol>
+  </svg>
+
+  <div class="grain" aria-hidden="true"></div>
+
+  <!-- NAV (real component) -->
+  <header class="nav" id="nav">
+    <span class="nav__brand"><span class="rec-dot" id="nav-rec"></span>Jensen</span>
+    <nav class="nav__links">
+      <a data-navlink="stills">Stills</a><a data-navlink="motion">Motion</a><a data-navlink="lives">Off the clock</a><a data-navlink="haus">The Haus</a>
+    </nav>
+    <div class="nav__meta">
+      <span class="nav__clock"><span class="nav__clock-label">TC</span><span id="clock">17:00</span></span>
+      <span class="btn btn--ghost btn--sm nav__cta">Book a shoot</span>
+    </div>
+    <div class="nav__progress"><span id="progress"></span></div>
+  </header>
+
+  <!-- S1 HERO -->
+  <div class="scene" id="s1">
+    <section class="hero" id="s1-hero">
+      <div class="hero__media"><video class="hero__video" id="v-hero" muted playsinline preload="auto" src="../../../assets/video/hero.mp4"></video></div>
+      <div class="hero__shade"></div>
+      <div class="viewfinder">
+        <span class="vf-corner vf-corner--tl"></span><span class="vf-corner vf-corner--tr"></span>
+        <span class="vf-corner vf-corner--bl"></span><span class="vf-corner vf-corner--br"></span>
+        <span class="vf-cross"></span>
+      </div>
+      <div class="hud">
+        <div class="hud__left">
+          <span class="hud__rec"><i id="hud-rec"></i>REC</span>
+          <span class="hud__tc" id="tc">17:00:00:00</span>
+          <span class="hud__spec">4K · 24P · ISO 800</span>
+        </div>
+        <span class="hud__toggle"><svg class="icon icon--fill"><use href="#i-pause"/></svg><span>Pause</span></span>
+      </div>
+      <div class="hero__content container">
+        <p class="kicker hero__kicker" id="s1-kicker">Photographer <span>/</span> Filmmaker <span>/</span> Rider</p>
+        <h1 class="hero__title"><span class="hero__word"><span class="char">J</span><span class="char">E</span><span class="char">N</span><span class="char">S</span><span class="char">E</span><span class="char">N</span></span></h1>
+        <div class="hero__row" id="s1-row">
+          <p class="hero__lede">Shooting the hours after five: bikes at speed, bodies in motion, loud rooms and the people who fill them.</p>
+          <div class="hero__ctas">
+            <span class="btn btn--accent">See the work <svg class="icon"><use href="#i-arrow-r"/></svg></span>
+            <span class="btn btn--ghost">After Work Haus <svg class="icon"><use href="#i-arrow-ur"/></svg></span>
+          </div>
+        </div>
+      </div>
+    </section>
+    <div class="ticker"><div class="ticker__band"><div class="ticker__track" id="tick">
+      <span>Photography</span><i></i><span>Videography</span><i></i><span>Two wheels</span><i></i><span>Car culture</span><i></i><span>Dance</span><i></i><span>Live music</span><i></i><span>Events</span><i></i>
+      <span>Photography</span><i></i><span>Videography</span><i></i><span>Two wheels</span><i></i><span>Car culture</span><i></i><span>Dance</span><i></i><span>Live music</span><i></i><span>Events</span><i></i>
+    </div></div></div>
+  </div>
+
+  <!-- S2 THE IDEA -->
+  <div class="scene" id="s2">
+    <p class="stamp" id="s2-stamp" style="position:absolute;left:140px;top:236px"><span class="stamp__time">17:00</span>Clock out</p>
+    <h2 class="intro__statement" id="s2-state">
+      <span class="ln"><span id="s2-l1">Nine-to-five pays the bills.</span></span>
+      <span class="ln"><span id="s2-l2"><em>Five-to-nine</em> is where</span></span>
+      <span class="ln"><span id="s2-l3">the good stuff happens.</span></span>
+    </h2>
+    <figure class="intro__portrait" id="s2-fig">
+      <img id="s2-img" src="../../../assets/img/jensen-rider-lg.webp" alt="">
+      <figcaption class="mono">FR.001 / Somewhere between work and home</figcaption>
+      <span class="curtain" id="s2-cur"></span>
+    </figure>
+  </div>
+
+  <!-- S3 STILLS -->
+  <div class="scene" id="s3">
+    <p class="stamp" id="s3-stamp" style="position:absolute;left:140px;top:120px"><span class="stamp__time">18:30</span>Stills</p>
+    <h2 class="section-title section-title--xl" id="s3-title">Stills <sup class="mono" id="s3-count">(12)</sup></h2>
+    <div class="filters" id="s3-filters">
+      <span class="chip" aria-pressed="true" id="chip-all">All</span>
+      <span class="chip" aria-pressed="false">Moto</span>
+      <span class="chip" aria-pressed="false" id="chip-auto">Automotive</span>
+      <span class="chip" aria-pressed="false">Street</span>
+      <span class="chip" aria-pressed="false">Stage</span>
+      <span class="chip" aria-pressed="false">Dance</span>
+    </div>
+    <div id="s3-grid"></div>
+  </div>
+
+  <!-- S4 MOTION -->
+  <div class="scene" id="s4">
+    <p class="stamp" id="s4-stamp" style="position:absolute;left:140px;top:120px"><span class="stamp__time">19:15</span>Motion</p>
+    <h2 class="section-title" id="s4-title">Motion</h2>
+    <p class="section-intro" id="s4-intro">Films, edits and reels, cut to the beat. Years of dancing to it help.</p>
+    <div class="reel" id="s4-reel">
+      <video class="reel__video" id="v-reel" muted playsinline preload="auto" src="../../../assets/video/reel.mp4"></video>
+      <div class="reel__shade" id="s4-shade"></div>
+      <div class="reel__hud mono" id="s4-hud">
+        <span class="reel__toggle"><svg class="icon icon--fill"><use href="#i-pause"/></svg><span>Pause preview</span></span>
+        <span>A001_C014 · 23.976</span>
+      </div>
+      <div class="reel__info" id="s4-info">
+        <p class="mono reel__kicker">Featured film · Moto</p>
+        <h3 class="reel__title"><span class="ln"><span id="s4-t1">Two wheels, <em>one take</em></span></span></h3>
+      </div>
+      <span class="reel__play" id="s4-play"><span class="reel__play-disc" id="s4-disc"><svg class="icon icon--fill"><use href="#i-play"/></svg></span><span class="reel__play-label">Play film</span></span>
+      <span class="curtain" id="s4-cur"></span>
+    </div>
+  </div>
+
+  <div id="s3-lb">
+      <div class="bar"><span class="mono">01 / 03</span><span class="icon-btn"><svg class="icon"><use href="#i-x"/></svg></span></div>
+      <div class="fig" id="s3-lbfig"><img src="../../../assets/img/still-auto-r34-lg.webp" alt=""></div>
+      <div class="cap"><span class="lightbox__title" style="font-size:30px">Taillight Red</span><span class="mono" style="font-size:15px;color:var(--fg-2)">Automotive · FR.022</span></div>
+      <span class="icon-btn navbtn" style="left:24px"><svg class="icon"><use href="#i-arrow-l"/></svg></span>
+      <span class="icon-btn navbtn" style="right:24px"><svg class="icon"><use href="#i-arrow-r"/></svg></span>
+    </div>
+  <div class="wipe" id="wipe-accent"></div>
+  <div class="wipe" id="wipe-bone"></div>
+
+  <!-- S5 THE HAUS -->
+  <div class="scene" id="s5">
+    <div class="haus">
+      <p class="stamp stamp--ink" id="s5-stamp" style="position:absolute;left:140px;top:120px"><span class="stamp__time">20:00</span>The Haus</p>
+      <p class="mono haus__eyebrow" id="s5-eyebrow" style="position:absolute;right:140px;top:124px">A media agency by Jensen</p>
+      <h2 class="haus__logo" id="s5-logo"><span class="ln"><span id="s5-l1">After</span></span><span class="ln"><span id="s5-l2">Work</span></span><span class="ln"><span id="s5-l3">Haus</span></span></h2>
+      <div class="badge" id="s5-badge">
+        <svg class="badge__ring" id="s5-ring" viewBox="0 0 200 200">
+          <defs><path id="badge-circle" d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0"/></defs>
+          <text><textPath href="#badge-circle" textLength="486" lengthAdjust="spacing">Our 5–9 after the 9–5 · Our 5–9 after the 9–5 · </textPath></text>
+        </svg>
+        <span class="badge__core" id="s5-core">5–9</span>
+      </div>
+      <div id="s5-rule"></div>
+      <p class="haus__tagline" id="s5-tag"><span class="ln"><span id="s5-tagin">Our <em>5–9</em> after the 9–5.</span></span></p>
+      <ul id="s5-services">
+        <li><span class="service__no mono">01</span><span class="service__name">Lifestyle</span></li>
+        <li><span class="service__no mono">02</span><span class="service__name">Sports</span></li>
+        <li><span class="service__no mono">03</span><span class="service__name">Media</span></li>
+        <li><span class="service__no mono">04</span><span class="service__name">Marketing</span></li>
+        <li><span class="service__no mono">05</span><span class="service__name">Events</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- S6 LAST CALL -->
+  <div class="scene" id="s6">
+    <div id="s6-media"><img id="s6-img" src="../../../assets/img/lastcall-sunset-lg.webp" alt=""></div>
+    <p class="stamp" id="s6-stamp"><span class="stamp__time" id="s6-time">20:59</span><span id="s6-label">Last call</span></p>
+    <h2 class="lastcall__title" id="s6-title">
+      <span class="ln"><span id="s6-l1">Got</span></span>
+      <span class="ln"><span id="s6-l2">something</span></span>
+      <span class="ln"><span id="s6-l3">that <em>moves?</em></span></span>
+    </h2>
+    <div id="s6-mail"><span class="mail-link" style="font-size:inherit">talkafterwork@gmail.com</span></div>
+    <div id="s6-social"><svg class="icon"><use href="#i-instagram"/></svg><span>@afterworkhaus</span></div>
+    <div id="s6-out"><span class="ln"><span class="t" id="s6-outt">21:00</span></span><span class="l" id="s6-outl">Clocked out</span></div>
+    <div id="s6-flash"></div>
+  </div>
+
+  <!-- cursor -->
+  <div id="ring"></div>
+  <svg id="cursor" viewBox="0 0 24 24"><path d="M4 3l16 7.2-6.8 2.1L10.6 19 4 3z" fill="#F1EBE1" stroke="#0B0A09" stroke-width="1.4" stroke-linejoin="round"/></svg>
+
+<script>
+(() => {
+  const $ = (s) => document.querySelector(s);
+  const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+  const prog = (t, a, b) => clamp((t - a) / (b - a));
+  const lerp = (a, b, x) => a + (b - a) * x;
+  const outQuart = (x) => 1 - Math.pow(1 - x, 4);
+  const outExpo = (x) => (x >= 1 ? 1 : 1 - Math.pow(2, -10 * x));
+  const inOut = (x) => (x < .5 ? 8 * x ** 4 : 1 - Math.pow(-2 * x + 2, 4) / 2);
+  const inCubic = (x) => x * x * x;
+  const pad = (n) => String(Math.floor(n)).padStart(2, '0');
+  const set = (el, props) => { for (const k in props) el.style.setProperty(k, props[k]); };
+  const show = (el, on) => { el.style.visibility = on ? 'visible' : 'hidden'; };
+
+  const DUR = 21.25;
+  const scenes = { s1: [0, 3.3], s2: [3.125, 6.25], s3: [6.25, 10.0], s4: [10.0, 13.125], s5: [13.125, 16.875], s6: [16.875, 99] };
+
+  // ---- nav clock keyframes (minutes since 00:00)
+  const K = [[0, 1020], [3.125, 1020], [6.25, 1110], [10.0, 1155], [13.125, 1200], [16.875, 1259], [19.999, 1259], [20.0, 1260]];
+  function clockAt(t) {
+    if (t <= K[0][0]) return K[0][1];
+    for (let i = 0; i < K.length - 1; i++) {
+      const [ta, ma] = K[i], [tb, mb] = K[i + 1];
+      if (t >= ta && t <= tb) return ma + (mb - ma) * ((t - ta) / (tb - ta));
+    }
+    return K[K.length - 1][1];
+  }
+
+  // ---- stills masonry (4 cols) + filtered layout (3 cars)
+  const shots = [
+    ['still-moto-sportbike', 1100, 1375, 'moto'], ['still-auto-r34', 1600, 1066, 'auto'], ['still-street-neon', 1600, 900, 'street'],
+    ['still-stage-drummer', 1100, 1650, 'stage'], ['still-dance-cypher', 1600, 1066, 'dance'], ['still-moto-helmet', 1100, 1653, 'moto'],
+    ['still-auto-evo', 1600, 1066, 'auto'], ['still-street-rain', 1100, 1375, 'street'], ['still-moto-headlight', 1600, 1068, 'moto'],
+    ['still-stage-mono', 1100, 1650, 'stage'], ['still-dance-freeze', 1100, 1650, 'dance'], ['still-auto-gtr', 1600, 1066, 'auto'],
+  ];
+  const grid = $('#s3-grid');
+  const GAP = 16, COLS = 4, GW = 1640, CW = (GW - GAP * (COLS - 1)) / COLS;
+  const colH = Array(COLS).fill(0);
+  const items = shots.map(([name, w, h, cat]) => {
+    const c = colH.indexOf(Math.min(...colH));
+    const r = { x: c * (CW + GAP), y: colH[c], w: CW, h: CW * h / w };
+    colH[c] += r.h + GAP;
+    const el = document.createElement('div');
+    el.className = 's3-item';
+    el.innerHTML = `<img src="../../../assets/img/${name}-lg.webp" alt="">`;
+    grid.appendChild(el);
+    return { el, cat, a: r, name };
+  });
+  const FW = (GW - GAP * 2) / 3;
+  let fi = 0;
+  items.forEach((it) => { if (it.cat === 'auto') { it.b = { x: fi * (FW + GAP), y: 0, w: FW, h: FW * 1066 / 1600 }; fi++; } });
+  const r34 = items[1].b;
+
+  // ---- geometry helpers
+  const chipAuto = $('#chip-auto');
+  let chipCenter = null, discCenter = null;
+  function measure() {
+    // offsets ignore the filter row's entrance transform, so this is the chip's settled centre
+    const f = $('#s3-filters');
+    chipCenter = { x: f.offsetLeft + chipAuto.offsetLeft + chipAuto.offsetWidth / 2, y: f.offsetTop + chipAuto.offsetTop + chipAuto.offsetHeight / 2 };
+  }
+
+  const REEL0 = { x: 140, y: 330, w: 1640, h: 1640 / 2.39 };
+
+  function cursorAt(t) {
+    // [time, x, y] waypoints per beat of the story; null = hidden
+    if (!((t >= 6.75 && t < 8.75) || (t >= 10.95 && t < 11.95))) return null;
+    if (!chipCenter) measure();
+    const s3 = [[6.75, 1560, 1000], [7.25, chipCenter.x, chipCenter.y], [8.05, chipCenter.x, chipCenter.y], [8.5, 140 + r34.x + r34.w * .55, 440 + r34.y + r34.h * .55]];
+    const disc = { x: REEL0.x + REEL0.w * .8, y: REEL0.y + REEL0.h / 2 - 18 };
+    const s4 = [[10.95, 980, 1000], [11.6, disc.x, disc.y]];
+    const path = t < 10 ? s3 : s4;
+    const visible = (t >= 6.75 && t < 8.75) || (t >= 10.95 && t < 11.95);
+    if (!visible) return null;
+    let p = path[0];
+    for (let i = 0; i < path.length - 1; i++) {
+      const [ta, xa, ya] = path[i], [tb, xb, yb] = path[i + 1];
+      if (t >= ta && t <= tb) { const k = inOut((t - ta) / (tb - ta)); return { x: lerp(xa, xb, k), y: lerp(ya, yb, k) }; }
+      if (t > tb) p = path[i + 1];
+    }
+    return { x: p[1] ?? p.x, y: p[2] ?? p.y };
+  }
+  const clicks = [7.3, 8.58, 11.66];
+
+  // ---- video seeking (deterministic)
+  const vHero = $('#v-hero'), vReel = $('#v-reel');
+  function seek(v, time) {
+    return new Promise((res) => {
+      const target = Math.max(0, Math.min(time, v.duration - 0.05));
+      if (Math.abs(v.currentTime - target) < 1e-3 && v.readyState >= 2) return res();
+      const done = () => { v.removeEventListener('seeked', done); requestAnimationFrame(() => requestAnimationFrame(res)); };
+      v.addEventListener('seeked', done);
+      v.currentTime = target;
+    });
+  }
+
+  // ---- the frame function
+  async function renderAt(t) {
+    const waits = [];
+    for (const id in scenes) { const [a, b] = scenes[id]; $('#' + id).classList.toggle('on', t >= a && t < b); }
+
+    // NAV
+    const nav = $('#nav');
+    nav.classList.toggle('is-scrolled', t >= 3.125);
+    const active = t >= 6.25 && t < 10 ? 'stills' : t >= 10 && t < 13.125 ? 'motion' : t >= 13.125 && t < 16.875 ? 'haus' : '';
+    document.querySelectorAll('[data-navlink]').forEach((a) => { if (a.dataset.navlink === active) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current'); });
+    nav.style.setProperty('--progress', clamp(t / 20).toFixed(4));
+    $('#clock').textContent = (() => { const m = Math.floor(clockAt(t)); return `${pad(m / 60)}:${pad(m % 60)}`; })();
+    // nav hides while the film goes full-frame, returns with the Haus
+    const navHide = t >= 11.95 && t < 13.125 ? prog(t, 11.95, 12.2) : 0;
+    nav.style.opacity = String(1 - navHide);
+    $('#nav-rec').style.opacity = t >= 20 ? '.25' : (t < 3 ? (Math.floor(t / .5) % 2 ? '.3' : '1') : '1');
+
+    $('#s3-lb').style.display = t >= 8.72 && t < 10 ? 'block' : 'none';
+    if (!chipCenter && t >= 6.25 && t < 10) measure();
+
+    // S1 HERO
+    if (t < 3.3) {
+      waits.push(seek(vHero, 0.6 + t));
+      $('#s1-hero').style.setProperty('--hero-p', (outQuart(prog(t, 0, 3.3)) * .45).toFixed(4));
+      document.querySelectorAll('#s1 .vf-corner').forEach((c) => { const k = outExpo(prog(t, .05, .6)); c.style.opacity = k; c.style.transform = `scale(${lerp(1.6, 1, k)})`; });
+      const tcS = 17 * 3600 + t, fr = Math.floor((t % 1) * 24);
+      $('#tc').textContent = `${pad(tcS / 3600)}:${pad((tcS / 60) % 60)}:${pad(tcS % 60)}:${pad(fr)}`;
+      $('#hud-rec').style.opacity = Math.floor(t / .5) % 2 ? '.25' : '1';
+      const kk = outQuart(prog(t, .15, .55));
+      set($('#s1-kicker'), { opacity: kk, transform: `translateY(${lerp(14, 0, kk)}px)` });
+      document.querySelectorAll('#s1 .char').forEach((c, i) => { const k = outExpo(prog(t, .35 + i * .07, .35 + i * .07 + .55)); c.style.transform = `translateY(${lerp(105, 0, k)}%)`; });
+      const kr = outQuart(prog(t, 1.35, 1.85));
+      set($('#s1-row'), { opacity: kr, transform: `translateY(${lerp(22, 0, kr)}px)` });
+      $('#tick').style.transform = `translate3d(${-(t * 150 + 40)}px,0,0)`;
+    }
+
+    // accent wipe S1 -> S2
+    const wa = $('#wipe-accent');
+    if (t >= 2.9 && t < 3.36) {
+      show(wa, true);
+      const y = t < 3.125 ? lerp(100, 0, inCubic(prog(t, 2.9, 3.125))) : lerp(0, -100, outQuart(prog(t, 3.125, 3.36)));
+      wa.style.transform = `translateY(${y}%)`;
+    } else show(wa, false);
+
+    // S2 THE IDEA
+    if (t >= 3.125 && t < 6.25) {
+      const ks = outQuart(prog(t, 3.2, 3.5));
+      set($('#s2-stamp'), { opacity: ks, transform: `translateX(${lerp(-16, 0, ks)}px)` });
+      [['#s2-l1', 3.15, 3.45], ['#s2-l2', 3.7, 3.98], ['#s2-l3', 3.8, 4.05]].forEach(([id, a, b]) => {
+        const k = outExpo(prog(t, a, b)); $(id).style.transform = `translateY(${lerp(110, 0, k)}%)`;
+      });
+      const kc = outQuart(prog(t, 3.3, 4.1));
+      $('#s2-cur').style.transform = `scaleY(${1 - kc})`;
+      $('#s2-img').style.transform = `scale(${lerp(1.15, 1.02, outQuart(prog(t, 3.3, 6.25)))})`;
+    }
+
+    // S3 STILLS
+    if (t >= 6.25 && t < 10) {
+      const ki = outQuart(prog(t, 6.25, 6.6));
+      set($('#s3-stamp'), { opacity: ki });
+      set($('#s3-title'), { opacity: ki, transform: `translateX(${lerp(-40, 0, ki)}px)` });
+      set($('#s3-filters'), { opacity: outQuart(prog(t, 6.35, 6.7)), transform: `translateY(${lerp(16, 0, outQuart(prog(t, 6.35, 6.7)))}px)` });
+      const filtered = t >= 7.36;
+      $('#chip-all').setAttribute('aria-pressed', String(!filtered));
+      chipAuto.setAttribute('aria-pressed', String(filtered));
+      const press = t >= 7.3 && t < 7.42 ? .96 : 1;
+      chipAuto.style.transform = `scale(${press})`;
+      $('#s3-count').textContent = filtered ? '(3)' : '(12)';
+      const scroll = lerp(0, -150, inOut(prog(t, 6.3, 7.45)));
+      const flip = inOut(prog(t, 7.48, 8.05));
+      items.forEach((it, idx) => {
+        let x = it.a.x, y = it.a.y + scroll, w = it.a.w, h = it.a.h, o = 1, s = 1;
+        const entry = outQuart(prog(t, 6.4 + idx * .04, 6.9 + idx * .04));
+        o = entry; y += lerp(40, 0, entry);
+        if (it.b) {
+          const fy = it.a.y - 150;
+          x = lerp(it.a.x, it.b.x, flip); y = lerp(fy, it.b.y, flip); w = lerp(it.a.w, it.b.w, flip); h = lerp(it.a.h, it.b.h, flip);
+          if (t < 7.48) y = it.a.y + scroll + lerp(40, 0, entry);
+        } else {
+          const out = outQuart(prog(t, 7.4, 7.62)); o = Math.min(o, 1 - out); s = lerp(1, .94, out);
+        }
+        set(it.el, { left: x + 'px', top: y + 'px', width: w + 'px', height: h + 'px', opacity: o, transform: `scale(${s})` });
+      });
+      const cardPress = t >= 8.58 && t < 8.7 ? .98 : 1;
+      items[1].el.style.transform = `scale(${cardPress})`;
+      // lightbox
+      const kl = outQuart(prog(t, 8.72, 9.02));
+      $('#s3-lb').style.opacity = kl;
+      $('#s3-lbfig').style.transform = `scale(${lerp(.96, 1, kl)})`;
+    }
+
+    // S4 MOTION
+    if (t >= 10 && t < 13.125) {
+      waits.push(seek(vReel, 0.4 + (t - 10)));
+      const ki = outQuart(prog(t, 10, 10.3));
+      const fade = 1 - prog(t, 11.95, 12.15);
+      set($('#s4-stamp'), { opacity: ki * fade });
+      set($('#s4-title'), { opacity: ki * fade, transform: `translateX(${lerp(-40, 0, ki)}px)` });
+      set($('#s4-intro'), { opacity: outQuart(prog(t, 10.15, 10.5)) * fade });
+      const ke = inOut(prog(t, 11.92, 12.5));
+      const R = { x: lerp(REEL0.x, 0, ke), y: lerp(REEL0.y, 0, ke), w: lerp(REEL0.w, 1920, ke), h: lerp(REEL0.h, 1080, ke) };
+      set($('#s4-reel'), { left: R.x + 'px', top: R.y + 'px', width: R.w + 'px', height: R.h + 'px' });
+      $('#s4-cur').style.transform = `scaleY(${1 - outQuart(prog(t, 10.05, 10.5))})`;
+      ['#s4-shade', '#s4-hud', '#s4-info', '#s4-play'].forEach((s) => { $(s).style.opacity = fade; });
+      $('#s4-t1').style.transform = `translateY(${lerp(110, 0, outExpo(prog(t, 10.35, 10.7)))}%)`;
+      const kd = outExpo(prog(t, 10.55, 10.85));
+      const dp = t >= 11.66 && t < 11.78 ? .9 : 1;
+      $('#s4-disc').style.transform = `scale(${kd * dp})`;
+      document.querySelector('#s4 .reel__play-label').style.opacity = kd;
+    }
+
+    // bone wipe S4 -> S5 ("lights on")
+    const wb = $('#wipe-bone');
+    if (t >= 12.85 && t < 13.125) { show(wb, true); wb.style.transform = `translateY(${lerp(100, 0, inCubic(prog(t, 12.85, 13.125)))}%)`; }
+    else show(wb, false);
+
+    // S5 THE HAUS
+    if (t >= 13.125 && t < 16.875) {
+      const ki = outQuart(prog(t, 13.15, 13.45));
+      $('#s5-stamp').style.opacity = ki; $('#s5-eyebrow').style.opacity = ki;
+      [['#s5-l1', 13.15], ['#s5-l2', 13.44], ['#s5-l3', 13.75]].forEach(([id, a]) => {
+        $(id).style.transform = `translateY(${lerp(105, 0, outExpo(prog(t, a, a + .32)))}%)`;
+      });
+      const kb = outExpo(prog(t, 13.95, 14.35));
+      $('#s5-badge').style.transform = `scale(${kb})`;
+      $('#s5-ring').style.transform = `rotate(${(t - 13.125) * 38}deg)`;
+      $('#s5-rule').style.transform = `scaleX(${inOut(prog(t, 14.0, 14.5))})`;
+      $('#s5-tagin').style.transform = `translateY(${lerp(110, 0, outExpo(prog(t, 14.25, 14.6)))}%)`;
+      document.querySelectorAll('#s5-services li').forEach((li, i) => {
+        const k = outQuart(prog(t, 14.55 + i * .12, 14.9 + i * .12));
+        set(li, { opacity: k, transform: `translateX(${lerp(30, 0, k)}px)` });
+      });
+    }
+
+    // S6 LAST CALL -> CLOCKED OUT
+    if (t >= 16.875) {
+      const ki = outQuart(prog(t, 16.9, 17.2));
+      $('#s6-stamp').style.opacity = ki;
+      [['#s6-l1', 16.92], ['#s6-l2', 17.05], ['#s6-l3', 17.18]].forEach(([id, a]) => {
+        $(id).style.transform = `translateY(${lerp(105, 0, outExpo(prog(t, a, a + .35)))}%)`;
+      });
+      const km = outQuart(prog(t, 17.8, 18.15));
+      set($('#s6-mail'), { opacity: km, transform: `translateY(${lerp(20, 0, km)}px)` });
+      const kso = outQuart(prog(t, 18.05, 18.4));
+      set($('#s6-social'), { opacity: kso, transform: `translateY(${lerp(16, 0, kso)}px)` });
+      $('#s6-img').style.transform = `scale(${lerp(1.12, 1.0, outQuart(prog(t, 16.875, 21.25)))})`;
+      const out = t >= 20;
+      $('#s6-time').textContent = out ? '21:00' : '20:59';
+      $('#s6-label').textContent = out ? 'Clocked out' : 'Last call';
+      const kf = outQuart(prog(t, 20.0, 20.25));
+      if (out) $('#s6-stamp').style.transform = `translateY(${lerp(-14, 0, kf)}px)`;
+      $('#s6-outt').style.transform = `translateY(${lerp(105, 0, outExpo(prog(t, 20.0, 20.32)))}%)`;
+      const kl2 = outQuart(prog(t, 20.18, 20.45));
+      set($('#s6-outl'), { opacity: kl2, transform: `translateY(${lerp(12, 0, kl2)}px)` });
+      $('#s6-flash').style.opacity = out ? (1 - outQuart(prog(t, 20.0, 20.4))) * .16 : 0;
+      $('#s6-img').style.opacity = String(lerp(.75, .45, outQuart(prog(t, 20.0, 20.8))));
+    }
+
+    // cursor
+    const cur = $('#cursor'), ring = $('#ring');
+    const p = cursorAt(t);
+    if (p) {
+      show(cur, true);
+      const pressed = clicks.some((c) => t >= c && t < c + .12);
+      cur.style.transform = `translate(${p.x - 4}px, ${p.y - 3}px) scale(${pressed ? .86 : 1})`;
+    } else show(cur, false);
+    const c = clicks.find((c) => t >= c && t < c + .4);
+    if (c !== undefined) {
+      const k = outQuart(prog(t, c, c + .4));
+      const pc = cursorAt(c) || { x: 0, y: 0 };
+      show(ring, true);
+      set(ring, { left: pc.x + 'px', top: pc.y + 'px', opacity: String(1 - k), transform: `scale(${lerp(.4, 1.5, k)})` });
+    } else show(ring, false);
+
+    await Promise.all(waits);
+  }
+
+  async function ready() {
+    await document.fonts.ready;
+    await Promise.all([...document.images].map((i) => (i.complete ? i.decode().catch(() => {}) : new Promise((r) => { i.onload = () => i.decode().then(r, r); i.onerror = r; }))));
+    await Promise.all([vHero, vReel].map((v) => (v.readyState >= 2 ? 0 : new Promise((r) => v.addEventListener('loadeddata', r, { once: true })))));
+    return true;
+  }
+  window.renderAt = renderAt;
+  window.stageReady = ready();
+})();
+</script>
+</body>
+</html>

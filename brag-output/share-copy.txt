@@ -1,0 +1,1 @@
+Built a portfolio for Jensen (photographer, filmmaker, rider) that doubles as the home of his agency @afterworkhaus. The whole site runs on his hours: the clock in the nav ticks from 17:00 to 21:00 as you scroll, and clocks out at the bottom.

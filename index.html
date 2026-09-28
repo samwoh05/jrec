@@ -1,0 +1,568 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Jensen — Photographer, Filmmaker, Rider</title>
+  <meta name="description" content="Jensen is a photographer and filmmaker shooting the hours after five: motorbikes, car culture, dance, live music and nightlife. Founder of the media agency After Work Haus.">
+  <meta name="theme-color" content="#0B0A09">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Jensen — Photographer, Filmmaker, Rider">
+  <meta property="og:description" content="Stills and motion from the hours after five. Founder of After Work Haus.">
+  <meta property="og:image" content="assets/video/hero-poster.webp">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230B0A09'/%3E%3Ccircle cx='16' cy='16' r='7' fill='%23FF4B1F'/%3E%3C/svg%3E">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap">
+  <link rel="preload" as="image" href="assets/video/hero-poster.webp">
+  <link rel="stylesheet" href="css/styles.css">
+  <script>document.documentElement.classList.add('js');</script>
+</head>
+<body>
+  <!-- Icon sprite (Lucide geometry) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4.5v15a1 1 0 0 0 1.5.86l12.5-7.5a1 1 0 0 0 0-1.72L8.5 3.64A1 1 0 0 0 7 4.5z"/></symbol>
+    <symbol id="i-pause" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></symbol>
+    <symbol id="i-arrow-ur" viewBox="0 0 24 24"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></symbol>
+    <symbol id="i-arrow-r" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></symbol>
+    <symbol id="i-arrow-l" viewBox="0 0 24 24"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></symbol>
+    <symbol id="i-arrow-up" viewBox="0 0 24 24"><path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16"/><path d="M4 12h16"/><path d="M4 17h10"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+    <symbol id="i-instagram" viewBox="0 0 24 24"><rect width="20" height="20" x="2" y="2" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><path d="M17.5 6.5h.01"/></symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></symbol>
+  </svg>
+
+  <a class="skip" href="#main">Skip to content</a>
+  <div class="grain" aria-hidden="true"></div>
+
+  <!-- ============ NAV ============ -->
+  <header class="nav" data-nav>
+    <a class="nav__brand" href="#top" aria-label="Jensen, back to top">
+      <span class="rec-dot" aria-hidden="true"></span>Jensen
+    </a>
+    <nav class="nav__links" aria-label="Primary">
+      <a href="#stills" data-navlink="stills">Stills</a>
+      <a href="#motion" data-navlink="motion">Motion</a>
+      <a href="#lives" data-navlink="lives">Off the clock</a>
+      <a href="#haus" data-navlink="haus">The Haus</a>
+    </nav>
+    <div class="nav__meta">
+      <span class="nav__clock" aria-hidden="true" title="The 5–9">
+        <span class="nav__clock-label">TC</span><span data-clock>17:00</span>
+      </span>
+      <a class="btn btn--ghost btn--sm nav__cta" href="#contact">Book a shoot</a>
+      <button class="nav__menu" type="button" aria-haspopup="dialog" aria-controls="menu" aria-expanded="false" data-menu-open>
+        <svg class="icon" aria-hidden="true"><use href="#i-menu"/></svg><span class="sr-only">Open menu</span>
+      </button>
+    </div>
+    <div class="nav__progress" aria-hidden="true"><span data-progress></span></div>
+  </header>
+
+  <!-- Mobile menu -->
+  <dialog class="menu" id="menu" aria-label="Site menu" data-menu>
+    <div class="menu__top">
+      <span class="nav__brand"><span class="rec-dot" aria-hidden="true"></span>Jensen</span>
+      <button class="icon-btn" type="button" data-menu-close>
+        <svg class="icon" aria-hidden="true"><use href="#i-x"/></svg><span class="sr-only">Close menu</span>
+      </button>
+    </div>
+    <nav aria-label="Mobile">
+      <ol class="menu__list">
+        <li><a href="#about"><span class="mono">17:00</span>Clock out</a></li>
+        <li><a href="#lives"><span class="mono">17:45</span>Off the clock</a></li>
+        <li><a href="#stills"><span class="mono">18:30</span>Stills</a></li>
+        <li><a href="#motion"><span class="mono">19:15</span>Motion</a></li>
+        <li><a href="#haus"><span class="mono">20:00</span>The Haus</a></li>
+        <li><a href="#contact"><span class="mono">20:59</span>Last call</a></li>
+      </ol>
+    </nav>
+    <div class="menu__foot">
+      <a class="btn btn--accent" href="mailto:talkafterwork@gmail.com">Book a shoot <svg class="icon" aria-hidden="true"><use href="#i-arrow-ur"/></svg></a>
+      <a class="menu__ig" href="https://www.instagram.com/afterworkhaus/" target="_blank" rel="noopener">
+        <svg class="icon" aria-hidden="true"><use href="#i-instagram"/></svg>@afterworkhaus
+      </a>
+    </div>
+  </dialog>
+
+  <main id="main">
+
+    <!-- ============ HERO ============ -->
+    <section class="hero" id="top" aria-label="Introduction" data-time="17:00">
+      <div class="hero__media">
+        <video class="hero__video" data-hero-video muted loop playsinline preload="metadata"
+               poster="assets/video/hero-poster.webp" aria-hidden="true" tabindex="-1">
+          <source src="assets/video/hero.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="hero__shade" aria-hidden="true"></div>
+
+      <div class="viewfinder" aria-hidden="true">
+        <span class="vf-corner vf-corner--tl"></span>
+        <span class="vf-corner vf-corner--tr"></span>
+        <span class="vf-corner vf-corner--bl"></span>
+        <span class="vf-corner vf-corner--br"></span>
+        <span class="vf-cross"></span>
+      </div>
+
+      <div class="hud">
+        <div class="hud__left" aria-hidden="true">
+          <span class="hud__rec"><i></i>REC</span>
+          <span class="hud__tc" data-timecode>17:00:00:00</span>
+          <span class="hud__spec">4K · 24P · ISO 800</span>
+        </div>
+        <button class="hud__toggle" type="button" data-video-toggle>
+          <svg class="icon icon--fill" aria-hidden="true" data-toggle-icon><use href="#i-pause"/></svg>
+          <span data-toggle-label>Pause</span><span class="sr-only"> background video</span>
+        </button>
+      </div>
+
+      <div class="hero__content container">
+        <p class="kicker hero__kicker">Photographer <span aria-hidden="true">/</span> Filmmaker <span aria-hidden="true">/</span> Rider</p>
+        <h1 class="hero__title">
+          <span class="sr-only">Jensen</span>
+          <span class="hero__word" aria-hidden="true"><span class="char" style="--i:0">J</span><span class="char" style="--i:1">E</span><span class="char" style="--i:2">N</span><span class="char" style="--i:3">S</span><span class="char" style="--i:4">E</span><span class="char" style="--i:5">N</span></span>
+        </h1>
+        <div class="hero__row">
+          <p class="hero__lede">Shooting the hours after five: bikes at speed, bodies in motion, loud rooms and the people who fill them.</p>
+          <div class="hero__ctas">
+            <a class="btn btn--accent" href="#stills">See the work <svg class="icon" aria-hidden="true"><use href="#i-arrow-r"/></svg></a>
+            <a class="btn btn--ghost" href="#haus">After Work Haus <svg class="icon" aria-hidden="true"><use href="#i-arrow-ur"/></svg></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ TICKER ============ -->
+    <div class="ticker" aria-hidden="true">
+      <div class="ticker__band">
+        <div class="ticker__track">
+          <span>Photography</span><i></i><span>Videography</span><i></i><span>Two wheels</span><i></i><span>Car culture</span><i></i><span>Dance</span><i></i><span>Live music</span><i></i><span>Events</span><i></i>
+          <span>Photography</span><i></i><span>Videography</span><i></i><span>Two wheels</span><i></i><span>Car culture</span><i></i><span>Dance</span><i></i><span>Live music</span><i></i><span>Events</span><i></i>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ INTRO / CLOCK OUT ============ -->
+    <section class="section intro" id="about" aria-labelledby="intro-title" data-time="17:00">
+      <div class="container intro__grid">
+        <p class="stamp" data-reveal><span class="stamp__time">17:00</span>Clock out</p>
+
+        <h2 class="intro__statement" id="intro-title" data-reveal>
+          Nine-to-five pays the bills. <em>Five-to-nine</em> is where the good stuff happens.
+        </h2>
+
+        <figure class="intro__portrait" data-reveal="clip">
+          <img src="assets/img/jensen-rider-lg.webp"
+               srcset="assets/img/jensen-rider-sm.webp 600w, assets/img/jensen-rider-lg.webp 1100w"
+               sizes="(min-width: 1024px) 34vw, 90vw" width="1100" height="1465" loading="lazy" decoding="async"
+               alt="A rider seen from behind on a motorbike, taillight glowing red under strings of city lights at night">
+          <figcaption class="mono">FR.001 / Somewhere between work and home</figcaption>
+        </figure>
+
+        <div class="intro__body">
+          <p data-reveal>I'm Jensen. I make photographs and films about the things that keep me up at night: motorbikes, cars, music, movement, and the crews built around them.</p>
+          <p data-reveal>Most evenings I'm out on the bike hunting for light, on a dance floor, or on stage with my band. Everything I shoot comes out of that life, which is probably why it never sits still.</p>
+          <dl class="facts" data-reveal>
+            <div><dt>Shoots</dt><dd>Photo, film, edit</dd></div>
+            <div><dt>Off the clock</dt><dd>Riding, dance, band</dd></div>
+            <div><dt>Founder</dt><dd><a href="#haus">After Work Haus</a></dd></div>
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ FOUR LIVES ============ -->
+    <section class="section lives" id="lives" aria-labelledby="lives-title" data-time="17:45">
+      <div class="container">
+        <header class="section-head">
+          <p class="stamp" data-reveal><span class="stamp__time">17:45</span>Off the clock</p>
+          <h2 class="section-title" id="lives-title" data-reveal>Four lives, <em>one lens</em></h2>
+        </header>
+
+        <div class="lives__grid">
+          <ol class="lives__list" data-lives>
+            <li class="life is-active" data-life="0">
+              <span class="life__no mono">01</span>
+              <h3 class="life__name">Rider</h3>
+              <p class="life__text">The bike is how I scout. Half my locations were found waiting at a red light after midnight. The other half came from getting lost on purpose.</p>
+              <img class="life__thumb" src="assets/img/life-ride-sm.webp" width="600" height="900" loading="lazy" decoding="async" alt="Rider in a black leather suit and helmet sitting on a motorbike at sunset">
+            </li>
+            <li class="life" data-life="1">
+              <span class="life__no mono">02</span>
+              <h3 class="life__name">Shooter</h3>
+              <p class="life__text">Stills and motion, one eye. I shoot the way I ride: commit to the line, trust the light, don't brake in the corner.</p>
+              <img class="life__thumb" src="assets/img/life-shoot-sm.webp" width="800" height="800" loading="lazy" decoding="async" alt="Photographer looking down at a mirrorless camera with a long lens in warm, moody light">
+            </li>
+            <li class="life" data-life="2">
+              <span class="life__no mono">03</span>
+              <h3 class="life__name">Dancer</h3>
+              <p class="life__text">Dance taught me timing. I read a room like choreography: where the beat drops, and where the moment is about to land.</p>
+              <img class="life__thumb" src="assets/img/life-dance-sm.webp" width="600" height="854" loading="lazy" decoding="async" alt="Black-and-white shot of a breakdancer in a freeze on a painted floor">
+            </li>
+            <li class="life" data-life="3">
+              <span class="life__no mono">04</span>
+              <h3 class="life__name">Bandmate</h3>
+              <p class="life__text">Stage lights, sweat and feedback. Playing live is why I know exactly where to stand when the drummer counts in.</p>
+              <img class="life__thumb" src="assets/img/life-band-sm.webp" width="800" height="533" loading="lazy" decoding="async" alt="Bassist silhouetted against red and white stage lights">
+            </li>
+          </ol>
+
+          <div class="lives__stage" aria-hidden="true" data-lives-stage>
+            <figure class="stage__frame is-active" data-stage="0">
+              <img src="assets/img/life-ride-lg.webp" width="1100" height="1650" loading="lazy" decoding="async" alt="">
+            </figure>
+            <figure class="stage__frame" data-stage="1">
+              <img src="assets/img/life-shoot-lg.webp" width="1600" height="1600" loading="lazy" decoding="async" alt="">
+            </figure>
+            <figure class="stage__frame" data-stage="2">
+              <img src="assets/img/life-dance-lg.webp" width="1100" height="1566" loading="lazy" decoding="async" alt="">
+            </figure>
+            <figure class="stage__frame" data-stage="3">
+              <img src="assets/img/life-band-lg.webp" width="1600" height="1066" loading="lazy" decoding="async" alt="">
+            </figure>
+            <span class="stage__label mono" data-stage-label>01 / Rider</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ STILLS ============ -->
+    <section class="section stills" id="stills" aria-labelledby="stills-title" data-time="18:30">
+      <div class="container">
+        <header class="section-head">
+          <div>
+            <p class="stamp" data-reveal><span class="stamp__time">18:30</span>Stills</p>
+            <h2 class="section-title section-title--xl" id="stills-title" data-reveal>Stills <sup class="mono" data-count>(12)</sup></h2>
+          </div>
+          <div class="filters" role="group" aria-label="Filter photographs by subject" data-reveal>
+            <button type="button" class="chip" aria-pressed="true" data-filter="all">All</button>
+            <button type="button" class="chip" aria-pressed="false" data-filter="moto">Moto</button>
+            <button type="button" class="chip" aria-pressed="false" data-filter="auto">Automotive</button>
+            <button type="button" class="chip" aria-pressed="false" data-filter="street">Street</button>
+            <button type="button" class="chip" aria-pressed="false" data-filter="stage">Stage</button>
+            <button type="button" class="chip" aria-pressed="false" data-filter="dance">Dance</button>
+          </div>
+        </header>
+        <p class="sr-only" aria-live="polite" data-filter-status></p>
+
+        <ul class="gallery" data-gallery>
+          <li class="shot" data-cat="moto">
+            <button type="button" class="shot__btn" data-full="assets/img/still-moto-sportbike-lg.webp" data-title="Grid Lights" data-meta="Moto · FR.014">
+              <img src="assets/img/still-moto-sportbike-sm.webp" srcset="assets/img/still-moto-sportbike-sm.webp 600w, assets/img/still-moto-sportbike-lg.webp 1100w" sizes="(min-width: 1024px) 31vw, (min-width: 560px) 46vw, 46vw" width="1100" height="1375" loading="lazy" decoding="async" alt="Rider in a red helmet on a white sportbike under night street lights">
+              <span class="shot__cap"><span class="shot__title">Grid Lights</span><span class="mono">Moto · FR.014</span></span>
+            </button>
+          </li>
+          <li class="shot" data-cat="auto">
+            <button type="button" class="shot__btn" data-full="assets/img/still-auto-r34-lg.webp" data-title="Taillight Red" data-meta="Automotive · FR.022">
+              <img src="assets/img/still-auto-r34-sm.webp" srcset="assets/img/still-auto-r34-sm.webp 800w, assets/img/still-auto-r34-lg.webp 1600w" sizes="(min-width: 1024px) 31vw, 46vw" width="1600" height="1066" loading="lazy" decoding="async" alt="Nissan Skyline with glowing round taillights on a red-lit street at night">
+              <span class="shot__cap"><span class="shot__title">Taillight Red</span><span class="mono">Automotive · FR.022</span></span>
+            </button>
+          </li>
+          <li class="shot" data-cat="street">
+            <button type="button" class="shot__btn" data-full="assets/img/still-street-neon-lg.webp" data-title="Wet Neon" data-meta="Street · FR.031">
+              <img src="assets/img/still-street-neon-sm.webp" srcset="assets/img/still-street-neon-sm.webp 800w, assets/img/still-street-neon-lg.webp 1600w" sizes="(min-width: 1024px) 31vw, 46vw" width="1600" height="900" loading="lazy" decoding="async" alt="Rain-soaked alley glowing with red and pink neon signs">
+              <span class="shot__cap"><span class="shot__title">Wet Neon</span><span class="mono">Street · FR.031</span></span>
+            </button>
+          </li>
+          <li class="shot" data-cat="stage">
+            <button type="button" class="shot__btn" data-full="assets/img/still-stage-drummer-lg.webp" data-title="Count In" data-meta="Stage · FR.047">
+              <img src="assets/img/still-stage-drummer-sm.webp" srcset="assets/img/still-stage-drummer-sm.webp 600w, assets/img/still-stage-drummer-lg.webp 1100w" sizes="(min-width: 1024px) 31vw, 46vw" width="1100" height="1650" loading="lazy" decoding="async" alt="Band on a dark stage washed in purple and blue light">
+              <span class="shot__cap"><span class="shot__title">Count In</span><span class="mono">Stage · FR.047</span></span>
+            </button>
+          </li>
+          <li class="shot" data-cat="dance">
+            <button type="button" class="shot__btn" data-full="assets/img/still-dance-cypher-lg.webp" data-title="The Cypher" data-meta="Dance · FR.052">
+              <img src="assets/img/still-dance-cypher-sm.webp" srcset="assets/img/still-dance-cypher-sm.webp 800w, assets/img/still-dance-cypher-lg.webp 1600w" sizes="(min-width: 1024px) 31vw, 46vw" width="1600" height="1066" loading="lazy" decoding="async" alt="Breakdancer in a head freeze in the middle of a watching crowd">
+              <span class="shot__cap"><span class="shot__title">The Cypher</span><span class="mono">Dance · FR.052</span></span>
+            </button>
+          </li>
+          <li class="shot" data-cat="moto">
+            <button type="button" class="shot__btn" data-full="assets/img/still-moto-helmet-lg.webp" data-title="Visor Up" data-meta="Moto · FR.063">
+              <img src="assets/img/still-moto-helmet-sm.webp" srcset="assets/img/still-moto-helmet-sm.webp 600w, assets/img/still-moto-helmet-lg.webp 1100w" sizes="(min-width: 1024px) 31vw, 46vw" width="1100" height="1653" loading="lazy" decoding="async" alt="Portrait of a motocross rider in a helmet and red goggles against a bright blue sky">
+              <span class="shot__cap"><span class="shot__title">Visor Up</span><span class="mono">Moto · FR.063</span></span>
+            </button>
+          </li>
+          <li class="shot" data-cat="auto">
+            <button type="button" class="shot__btn" data-full="assets/img/still-auto-evo-lg.webp" data-title="Idle" data-meta="Automotive · FR.070">
+              <img src="assets/img/still-auto-evo-sm.webp" srcset="assets/img/still-auto-evo-sm.webp 800w, assets/img/still-auto-evo-lg.webp 1600w" sizes="(min-width: 1024px) 31vw, 46vw" width="1600" height="1066" loading="lazy" decoding="async" alt="Dark sedan with glowing red taillights on an empty street at night">
+              <span class="shot__cap"><span class="shot__title">Idle</span><span class="mono">Automotive · FR.070</span></span>
+            </button>
+          </li>
+          <li class="shot" data-cat="street">
+            <button type="button" class="shot__btn" data-full="assets/img/still-street-rain-lg.webp" data-title="After Close" data-meta="Street · FR.078">
+              <img src="assets/img/still-street-rain-sm.webp" srcset="assets/img/still-street-rain-sm.webp 600w, assets/img/still-street-rain-lg.webp 1100w" sizes="(min-width: 1024px) 31vw, 46vw" width="1100" height="1375" loading="lazy" decoding="async" alt="Shuttered storefront reflected in a rain-soaked street at night">
+              <span class="shot__cap"><span class="shot__title">After Close</span><span class="mono">Street · FR.078</span></span>
+            </button>
+          </li>
+          <li class="shot" data-cat="moto">
+            <button type="button" class="shot__btn" data-full="assets/img/still-moto-headlight-lg.webp" data-title="Round Eye" data-meta="Moto · FR.085">
+              <img src="assets/img/still-moto-headlight-sm.webp" srcset="assets/img/still-moto-headlight-sm.webp 800w, assets/img/still-moto-headlight-lg.webp 1600w" sizes="(min-width: 1024px) 31vw, 46vw" width="1600" height="1068" loading="lazy" decoding="async" alt="Close-up of a round motorcycle headlight">
+              <span class="shot__cap"><span class="shot__title">Round Eye</span><span class="mono">Moto · FR.085</span></span>
+            </button>
+          </li>
+          <li class="shot" data-cat="stage">
+            <button type="button" class="shot__btn" data-full="assets/img/still-stage-mono-lg.webp" data-title="Sticks" data-meta="Stage · FR.091">
+              <img src="assets/img/still-stage-mono-sm.webp" srcset="assets/img/still-stage-mono-sm.webp 600w, assets/img/still-stage-mono-lg.webp 1100w" sizes="(min-width: 1024px) 31vw, 46vw" width="1100" height="1650" loading="lazy" decoding="async" alt="Black-and-white photo of a drummer mid-hit behind the cymbals">
+              <span class="shot__cap"><span class="shot__title">Sticks</span><span class="mono">Stage · FR.091</span></span>
+            </button>
+          </li>
+          <li class="shot" data-cat="dance">
+            <button type="button" class="shot__btn" data-full="assets/img/still-dance-freeze-lg.webp" data-title="One-Hand Freeze" data-meta="Dance · FR.104">
+              <img src="assets/img/still-dance-freeze-sm.webp" srcset="assets/img/still-dance-freeze-sm.webp 600w, assets/img/still-dance-freeze-lg.webp 1100w" sizes="(min-width: 1024px) 31vw, 46vw" width="1100" height="1650" loading="lazy" decoding="async" alt="Dancer in a blue tracksuit balancing on one hand in a colourful street">
+              <span class="shot__cap"><span class="shot__title">One-Hand Freeze</span><span class="mono">Dance · FR.104</span></span>
+            </button>
+          </li>
+          <li class="shot" data-cat="auto">
+            <button type="button" class="shot__btn" data-full="assets/img/still-auto-gtr-lg.webp" data-title="Livery" data-meta="Automotive · FR.112">
+              <img src="assets/img/still-auto-gtr-sm.webp" srcset="assets/img/still-auto-gtr-sm.webp 800w, assets/img/still-auto-gtr-lg.webp 1600w" sizes="(min-width: 1024px) 31vw, 46vw" width="1600" height="1066" loading="lazy" decoding="async" alt="Black GT-R with a yellow livery lit by its own taillights beside a building">
+              <span class="shot__cap"><span class="shot__title">Livery</span><span class="mono">Automotive · FR.112</span></span>
+            </button>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ MOTION ============ -->
+    <section class="section motion" id="motion" aria-labelledby="motion-title" data-time="19:15">
+      <div class="container">
+        <header class="section-head section-head--split">
+          <div>
+            <p class="stamp" data-reveal><span class="stamp__time">19:15</span>Motion</p>
+            <h2 class="section-title section-title--xl" id="motion-title" data-reveal>Motion</h2>
+          </div>
+          <p class="section-intro" data-reveal>Films, edits and reels, cut to the beat. Years of dancing to it help.</p>
+        </header>
+
+        <div class="reel" data-reveal="clip">
+          <video class="reel__video" data-reel-preview muted loop playsinline preload="metadata"
+                 poster="assets/video/reel-poster.webp" aria-hidden="true" tabindex="-1">
+            <source src="assets/video/reel.mp4" type="video/mp4">
+          </video>
+          <div class="reel__shade" aria-hidden="true"></div>
+          <div class="reel__hud mono">
+            <button type="button" class="reel__toggle" data-reel-toggle>
+              <svg class="icon icon--fill" aria-hidden="true" data-reel-icon><use href="#i-pause"/></svg><span data-reel-label>Pause preview</span>
+            </button>
+            <span aria-hidden="true">A001_C014 · 23.976</span>
+          </div>
+          <div class="reel__info">
+            <p class="mono reel__kicker">Featured film · Moto</p>
+            <h3 class="reel__title">Two wheels, <em>one take</em></h3>
+          </div>
+          <button type="button" class="reel__play" data-play-video="assets/video/reel.mp4" data-video-title="Two wheels, one take">
+            <span class="reel__play-disc"><svg class="icon icon--fill" aria-hidden="true"><use href="#i-play"/></svg></span>
+            <span class="reel__play-label">Play film</span><span class="sr-only">: Two wheels, one take</span>
+          </button>
+        </div>
+
+        <ul class="films">
+          <li class="film" data-reveal style="--i:0">
+            <button type="button" class="film__btn" data-play-video="assets/video/hero.mp4" data-video-title="Night Shift">
+              <span class="film__thumb">
+                <img src="assets/img/film-bts-sm.webp" width="800" height="533" loading="lazy" decoding="async" alt="">
+                <span class="film__play"><svg class="icon icon--fill" aria-hidden="true"><use href="#i-play"/></svg></span>
+              </span>
+              <span class="film__meta"><span class="film__title">Night Shift</span><span class="mono">Moto film · 16:9</span></span>
+            </button>
+          </li>
+          <li class="film" data-reveal style="--i:1">
+            <button type="button" class="film__btn" data-play-video="assets/video/reel.mp4" data-video-title="Midnight Meet">
+              <span class="film__thumb">
+                <img src="assets/img/film-carmeet-sm.webp" width="800" height="533" loading="lazy" decoding="async" alt="">
+                <span class="film__play"><svg class="icon icon--fill" aria-hidden="true"><use href="#i-play"/></svg></span>
+              </span>
+              <span class="film__meta"><span class="film__title">Midnight Meet</span><span class="mono">Car culture · After Work Haus</span></span>
+            </button>
+          </li>
+          <li class="film" data-reveal style="--i:2">
+            <button type="button" class="film__btn" data-play-video="assets/video/hero.mp4" data-video-title="Confetti Hour">
+              <span class="film__thumb">
+                <img src="assets/img/film-event-sm.webp" width="800" height="533" loading="lazy" decoding="async" alt="">
+                <span class="film__play"><svg class="icon icon--fill" aria-hidden="true"><use href="#i-play"/></svg></span>
+              </span>
+              <span class="film__meta"><span class="film__title">Confetti Hour</span><span class="mono">Event aftermovie</span></span>
+            </button>
+          </li>
+          <li class="film" data-reveal style="--i:3">
+            <button type="button" class="film__btn" data-play-video="assets/video/reel.mp4" data-video-title="Full Volume">
+              <span class="film__thumb">
+                <img src="assets/img/film-concert-sm.webp" width="800" height="600" loading="lazy" decoding="async" alt="">
+                <span class="film__play"><svg class="icon icon--fill" aria-hidden="true"><use href="#i-play"/></svg></span>
+              </span>
+              <span class="film__meta"><span class="film__title">Full Volume</span><span class="mono">Live session · Band</span></span>
+            </button>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ AFTER WORK HAUS ============ -->
+    <section class="haus" id="haus" aria-labelledby="haus-title" data-time="20:00">
+      <div class="container">
+        <div class="haus__top">
+          <p class="stamp stamp--ink" data-reveal><span class="stamp__time">20:00</span>The Haus</p>
+          <p class="mono haus__eyebrow" data-reveal>A media agency by Jensen</p>
+        </div>
+
+        <div class="haus__hero">
+          <div class="haus__mark">
+            <h2 class="haus__logo" id="haus-title" data-reveal>
+              <span>After</span><span>Work</span><span>Haus</span>
+            </h2>
+            <div class="badge" aria-hidden="true">
+              <svg class="badge__ring" viewBox="0 0 200 200">
+                <defs><path id="badge-circle" d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0"/></defs>
+                <text><textPath href="#badge-circle" textLength="486" lengthAdjust="spacing">Our 5–9 after the 9–5 · Our 5–9 after the 9–5 · </textPath></text>
+              </svg>
+              <span class="badge__core">5–9</span>
+            </div>
+          </div>
+
+          <div class="haus__pitch">
+            <p class="haus__tagline" data-reveal>Our <em class="nowrap">5–9</em> after <span class="nowrap">the 9–5.</span></p>
+            <div class="haus__pitch-body">
+              <p class="haus__intro" data-reveal>After Work Haus is the agency I started for everything that happens off the clock. We make content for the brands, events and communities that come alive after hours, from first idea to final post.</p>
+              <div class="haus__ctas" data-reveal>
+                <a class="btn btn--ink" href="mailto:talkafterwork@gmail.com?subject=Project%20enquiry%20%E2%80%94%20After%20Work%20Haus">Start a project <svg class="icon" aria-hidden="true"><use href="#i-arrow-r"/></svg></a>
+                <a class="btn btn--line-ink" href="https://www.instagram.com/afterworkhaus/" target="_blank" rel="noopener">
+                  <svg class="icon" aria-hidden="true"><use href="#i-instagram"/></svg>@afterworkhaus<span class="sr-only"> on Instagram (opens in a new tab)</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="haus__services">
+          <p class="mono haus__label" data-reveal>What the Haus does</p>
+          <ul class="services">
+            <li><a class="service" data-reveal href="mailto:talkafterwork@gmail.com?subject=Enquiry%3A%20Lifestyle">
+              <span class="service__no mono">01</span><span class="service__name">Lifestyle</span>
+              <span class="service__desc">Brand stories shot where people actually live: streets, garages, dance floors.</span>
+              <span class="service__go"><svg class="icon" aria-hidden="true"><use href="#i-arrow-ur"/></svg><span class="sr-only">Enquire about lifestyle</span></span>
+            </a></li>
+            <li><a class="service" data-reveal href="mailto:talkafterwork@gmail.com?subject=Enquiry%3A%20Sports">
+              <span class="service__no mono">02</span><span class="service__name">Sports</span>
+              <span class="service__desc">Moto, motorsport and action coverage from a crew that knows the racing line.</span>
+              <span class="service__go"><svg class="icon" aria-hidden="true"><use href="#i-arrow-ur"/></svg><span class="sr-only">Enquire about sports</span></span>
+            </a></li>
+            <li><a class="service" data-reveal href="mailto:talkafterwork@gmail.com?subject=Enquiry%3A%20Media">
+              <span class="service__no mono">03</span><span class="service__name">Media</span>
+              <span class="service__desc">Photo, film and edits built for feeds, screens and the big wall.</span>
+              <span class="service__go"><svg class="icon" aria-hidden="true"><use href="#i-arrow-ur"/></svg><span class="sr-only">Enquire about media</span></span>
+            </a></li>
+            <li><a class="service" data-reveal href="mailto:talkafterwork@gmail.com?subject=Enquiry%3A%20Marketing">
+              <span class="service__no mono">04</span><span class="service__name">Marketing</span>
+              <span class="service__desc">Campaigns, content calendars and launches that meet your audience after hours.</span>
+              <span class="service__go"><svg class="icon" aria-hidden="true"><use href="#i-arrow-ur"/></svg><span class="sr-only">Enquire about marketing</span></span>
+            </a></li>
+            <li><a class="service" data-reveal href="mailto:talkafterwork@gmail.com?subject=Enquiry%3A%20Events">
+              <span class="service__no mono">05</span><span class="service__name">Events</span>
+              <span class="service__desc">Meets, parties and gigs, covered live, cut fast and posted before the night is over.</span>
+              <span class="service__go"><svg class="icon" aria-hidden="true"><use href="#i-arrow-ur"/></svg><span class="sr-only">Enquire about events</span></span>
+            </a></li>
+          </ul>
+        </div>
+
+        <div class="collage">
+          <figure class="collage__item collage__item--a" data-reveal="clip">
+            <img src="assets/img/awh-auto-lg.webp" srcset="assets/img/awh-auto-sm.webp 800w, assets/img/awh-auto-lg.webp 1600w" sizes="(min-width: 1024px) 58vw, 100vw" width="1600" height="1066" loading="lazy" decoding="async" alt="Blue Nissan Skyline parked under a concrete underpass at night">
+            <figcaption class="mono">Car culture</figcaption>
+          </figure>
+          <figure class="collage__item collage__item--b" data-reveal="clip">
+            <img src="assets/img/awh-production-sm.webp" srcset="assets/img/awh-production-sm.webp 600w, assets/img/awh-production-lg.webp 1100w" sizes="(min-width: 1024px) 30vw, 50vw" width="1100" height="1647" loading="lazy" decoding="async" alt="Videographer in a cap operating a cinema camera rig">
+            <figcaption class="mono">Production</figcaption>
+          </figure>
+          <figure class="collage__item collage__item--c" data-reveal="clip">
+            <img src="assets/img/awh-events-sm.webp" srcset="assets/img/awh-events-sm.webp 800w, assets/img/awh-events-lg.webp 1600w" sizes="(min-width: 1024px) 34vw, 50vw" width="1600" height="1066" loading="lazy" decoding="async" alt="Packed nightclub with beams of stage light over the crowd">
+            <figcaption class="mono">Nightlife &amp; events</figcaption>
+          </figure>
+          <figure class="collage__item collage__item--d" data-reveal="clip">
+            <img src="assets/img/awh-meet-sm.webp" srcset="assets/img/awh-meet-sm.webp 800w, assets/img/awh-meet-lg.webp 1600w" sizes="(min-width: 1024px) 34vw, 100vw" width="1600" height="1200" loading="lazy" decoding="async" alt="Rows of Japanese sports cars gathered at an outdoor car meet">
+            <figcaption class="mono">Meets &amp; community</figcaption>
+          </figure>
+        </div>
+
+        <ol class="process">
+          <li data-reveal style="--i:0"><span class="process__no">01</span><h3>Brief</h3><p>We talk it through, ideally after work, and lock the idea, the date and the deliverables.</p></li>
+          <li data-reveal style="--i:1"><span class="process__no">02</span><h3>Shoot</h3><p>Photo and video on the same day with one crew, so nothing gets lost between teams.</p></li>
+          <li data-reveal style="--i:2"><span class="process__no">03</span><h3>Cut</h3><p>Edited to the beat, graded to feel like the night felt, and sized for every platform.</p></li>
+          <li data-reveal style="--i:3"><span class="process__no">04</span><h3>Drop</h3><p>Delivered, scheduled and pushed out while people are still talking about it.</p></li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ============ LAST CALL ============ -->
+    <section class="lastcall" id="contact" aria-labelledby="contact-title" data-time="20:59">
+      <div class="lastcall__media" aria-hidden="true">
+        <img src="assets/img/lastcall-sunset-sm.webp" srcset="assets/img/lastcall-sunset-sm.webp 600w, assets/img/lastcall-sunset-lg.webp 1100w" sizes="(min-width: 1024px) 45vw, 100vw" width="1100" height="1467" loading="lazy" decoding="async" alt="">
+      </div>
+      <div class="container lastcall__inner">
+        <p class="stamp" data-reveal><span class="stamp__time">20:59</span>Last call</p>
+        <h2 class="lastcall__title" id="contact-title" data-reveal>Got something that <em>moves?</em></h2>
+        <p class="lastcall__lede" data-reveal>Shoots, films, events, brand work, or just a ride out. Tell me what you're making and when the lights go down.</p>
+        <div class="lastcall__mail" data-reveal>
+          <a class="mail-link" href="mailto:talkafterwork@gmail.com">talkafterwork@gmail.com</a>
+          <button type="button" class="icon-btn icon-btn--line" data-copy="talkafterwork@gmail.com">
+            <svg class="icon" aria-hidden="true" data-copy-icon><use href="#i-copy"/></svg>
+            <span class="sr-only">Copy email address</span>
+          </button>
+          <span class="copy-status mono" aria-live="polite" data-copy-status></span>
+        </div>
+        <ul class="socials" data-reveal>
+          <li><a href="https://www.instagram.com/afterworkhaus/" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-instagram"/></svg>Instagram · @afterworkhaus<span class="sr-only"> (opens in a new tab)</span></a></li>
+          <li><a href="mailto:talkafterwork@gmail.com?subject=Shoot%20booking"><svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg>Book a shoot</a></li>
+          <!-- Add Jensen's personal links here, e.g.:
+          <li><a href="https://www.instagram.com/HANDLE/" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-instagram"/></svg>Instagram · @HANDLE</a></li>
+          -->
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <p class="mono">© <span data-year>2026</span> Jensen · All frames shot after hours</p>
+      <p class="mono footer__clock">21:00 · Clocked out</p>
+      <a class="footer__top mono" href="#top">Back to top <svg class="icon" aria-hidden="true"><use href="#i-arrow-up"/></svg></a>
+    </div>
+  </footer>
+
+  <!-- Photo lightbox -->
+  <dialog class="lightbox" aria-label="Photo viewer" data-lightbox>
+    <div class="lightbox__bar">
+      <span class="mono" data-lb-count>01 / 12</span>
+      <button type="button" class="icon-btn" data-lb-close>
+        <svg class="icon" aria-hidden="true"><use href="#i-x"/></svg><span class="sr-only">Close photo viewer</span>
+      </button>
+    </div>
+    <p class="sr-only" aria-live="polite" data-lb-live></p>
+    <figure class="lightbox__figure">
+      <img data-lb-img src="" alt="">
+      <figcaption><span class="lightbox__title" data-lb-title></span><span class="mono" data-lb-meta></span></figcaption>
+    </figure>
+    <button type="button" class="icon-btn lightbox__nav lightbox__nav--prev" data-lb-prev>
+      <svg class="icon" aria-hidden="true"><use href="#i-arrow-l"/></svg><span class="sr-only">Previous photo</span>
+    </button>
+    <button type="button" class="icon-btn lightbox__nav lightbox__nav--next" data-lb-next>
+      <svg class="icon" aria-hidden="true"><use href="#i-arrow-r"/></svg><span class="sr-only">Next photo</span>
+    </button>
+  </dialog>
+
+  <!-- Video player -->
+  <dialog class="player" aria-label="Video player" data-player>
+    <div class="player__bar">
+      <span class="mono" data-player-title></span>
+      <button type="button" class="icon-btn" data-player-close>
+        <svg class="icon" aria-hidden="true"><use href="#i-x"/></svg><span class="sr-only">Close video</span>
+      </button>
+    </div>
+    <div class="player__frame" data-player-frame></div>
+  </dialog>
+
+  <script src="js/main.js" defer></script>
+</body>
+</html>
